@@ -204,7 +204,7 @@ const ExportCreditPage = () => {
                             controls
                             onClick={handlePlayPause}
                         >
-                            <source src={imgUrl + '/img/others/sampleVid.mp4'} type="video/mp4" />
+                            <source src={imgUrl + '/img/others/exportcredit.mp4'} type="video/mp4" />
                             Your browser does not support the video tag.
                         </video>
                     </div>

@@ -7,6 +7,7 @@ export default {
     extend: {
       fontFamily: {
         arial: ['Arial', 'sans-serif'],
+        serif: ['Georgia', 'Times New Roman', 'serif'],
       },
     },
   },

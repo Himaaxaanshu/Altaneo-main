@@ -101,8 +101,8 @@ const Home = () => {
   const Title = ({ subTitle, title }) => {
     return (
       <div className='text-center my-5 text-2xl font-semibold'>
-        <h2 className='text-blue-800 font'>{subTitle}</h2> {/* Change color as needed */}
-        <h1 className='text-black mt-2 text-3xl font-bold'>{title}</h1>     {/* Change color as needed */}
+        <h2 className='text-blue-800 font-serif font'>{subTitle}</h2> {/* Change color as needed */}
+        <h1 className='text-black mt-2 text-3xl font-serif font-bold'>{title}</h1>     {/* Change color as needed */}
       </div>
     );
   };

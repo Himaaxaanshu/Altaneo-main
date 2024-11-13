@@ -41,7 +41,7 @@ const Bot = () => {
 
                 {!openChat && (
                     <button
-                        className="fixed bottom-2 right-1 sm:bottom-10 sm:right-10 bg-green-500 text-white p-3 shadow-lg rounded-full pointer-events-auto z-50"
+                        className="fixed bottom-2 right-1 font-serif sm:bottom-10 sm:right-10 bg-green-500 text-white p-3 shadow-lg rounded-full pointer-events-auto z-50"
                         onClick={onClickButton}
                     >
                         Connect

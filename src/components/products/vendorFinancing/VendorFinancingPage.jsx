@@ -202,19 +202,20 @@ const VendorFinancingPage = () => {
         </div>
         <Numbers />
 
-        <div className="flex items-center justify-center  h-112 md:h-128 mb-4 mt-20 w-full px-4 md:px-0">
-          <div className="w-full md:w-3/4 lg:w-2/3  bg-white">
-            <video
-              ref={videoRef}
-              className="w-full h-full rounded-2xl object-cover"
-              controls
-              onClick={handlePlayPause}
-            >
-              <source src={imgUrl + '/img/others/sampleVid.mp4'} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        </div>
+        <div className="flex items-center justify-center h-112 md:h-128 lg:h-144 mb-4 mt-10 w-full px-2 md:px-4 lg:px-0 overflow-x-hidden">
+    <div className="w-full max-w-full sm:w-11/12 md:w-3/4 lg:w-2/3 bg-white">
+        <video
+            ref={videoRef}
+            className="w-full h-full max-w-full rounded-2xl object-cover"
+            controls
+            onClick={handlePlayPause}
+        >
+            <source src={imgUrl + '/img/others/vendorfinancing.mp4'} type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+
         <div className="py-8 bg-gray-100 text-center w-full">
           <h2 className="text-5xl font-bold mt-4 mb-2">Products</h2>
           <p className="max-w-md mx-auto text-base mb-4">

@@ -1,5 +1,4 @@
 import React from 'react';
-import './Footer.css';
 import CookieConsent from 'react-cookie-consent';
 import { RiTwitterXFill } from "react-icons/ri";
 import { FaFacebookF } from "react-icons/fa";

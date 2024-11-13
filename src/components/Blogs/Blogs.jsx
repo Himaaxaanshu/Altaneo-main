@@ -35,47 +35,46 @@ const Blogs = () => {
             to='Blogs' />
 
          <section class="text-gray-600 body-font">
-            <div class="container px-5 py-24 mx-auto">
-               <div class="flex flex-wrap -m-4">
+            <div class="container px-1 py-24 mx-auto">
+               <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                   {blogData.map((data, index) => {
                      return (
-                        <div key={index} class="p-4 md:w-1/3">
-                           <div class="h-full flex flex-col rounded-xl shadow-cla-blue bg-white overflow-hidden">
-                              <img
-                                 class="lg:h-48 md:h-36 w-full object-cover object-center scale-110 transition-all duration-400 hover:scale-100"
-                                 src={data.img}
-                                 alt="blog" />
-                              <div class="p-6 flex flex-col mb-1 flex-grow">
-                                 <h1 class="title-font leading-relaxed text-xl font-arial font-medium text-black mb-3">{data.title}</h1>
-                                 <p class="leading-relaxed text-sm mb-3 text-gray-600">{data.oneLine}</p>
-                                 <div class="mt-auto mb-0">
-                                    <button
-                                       onClick={() => onClickReadMore(data.route)}
-                                       class="w-full bg-blue-500 text-white rounded-full  px-4 py-2 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">
-                                       Read More
-                                    </button>
-                                    <hr className="my-2" />
-                                    <p
-                                       className="text-blue-500 text-base font-arial cursor-pointer mb-0 mt-1 hover:text-blue-800"
-                                       onClick={() => onClickAuthor(data.author)}
-                                    >
-                                       Blog by {data.author}
-                                       <br />
-                                       {data.author == 'Altaneo' ? (
-                                          <span className="text-white">duhu</span>
-                                       ) :
-                                          (
-                                             <span className="text-gray-400 text-sm">
-                                                {data.designation}
-                                             </span>
-                                          )
-
-                                       }
-                                    </p>
-                                 </div>
-                              </div>
-                           </div>
+                        <div key={index} className="p-4">
+                        <div className="h-full flex flex-col rounded-xl shadow-cla-blue bg-white overflow-hidden">
+                          <img
+                            className="lg:h-48 md:h-36 w-full object-cover object-center scale-110 transition-all duration-400 hover:scale-100"
+                            src={data.img}
+                            alt="blog"
+                          />
+                          <div className="p-6 flex flex-col mb-1 flex-grow">
+                            <h1 className="title-font leading-relaxed text-xl font-arial font-medium text-black mb-3">{data.title}</h1>
+                            <p className="leading-relaxed text-sm mb-3 text-gray-600">{data.oneLine}</p>
+                            <div className="mt-auto mb-0">
+                              <button
+                                onClick={() => onClickReadMore(data.route)}
+                                className="w-full bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+                              >
+                                Read More
+                              </button>
+                              <hr className="my-2" />
+                              <p
+                                className="text-blue-500 text-base font-arial cursor-pointer mb-0 mt-1 hover:text-blue-800"
+                                onClick={() => onClickAuthor(data.author)}
+                              >
+                                Blog by {data.author}
+                                <br />
+                                {data.author === 'Altaneo' ? (
+                                  <span className="text-white">duhu</span>
+                                ) : (
+                                  <span className="text-gray-400 text-sm">
+                                    {data.designation}
+                                  </span>
+                                )}
+                              </p>
+                            </div>
+                          </div>
                         </div>
+                      </div>
                      )
                   })}
                </div>

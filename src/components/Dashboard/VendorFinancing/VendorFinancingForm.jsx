@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useHistory } from 'react-router-dom';
@@ -31,12 +31,12 @@ const VendorFinancingForm = () => {
 
 
 
-  useEffect(() => {
-    if (!uuid || !phone ) {
-      history.push('/')
-      toast.error('Not a Valid User')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (!uuid || !phone ) {
+  //     history.push('/')
+  //     toast.error('Not a Valid User')
+  //   }
+  // }, [])
 
 
   const [data, setData] = useState({
@@ -79,13 +79,27 @@ const VendorFinancingForm = () => {
     setData({ ...data, gstRegistered:value})
   }
 
-  const onChangeDate = (e) => {
-    let originalDate=e.target.value
-    let [year, month, day] = originalDate.split("-")
-    let convertedDate = `${day}-${month}-${year}`
-    setDate(e.target.value)
-    setData({ ...data, dob:convertedDate});
-  }
+  
+    const inputRef = useRef(null);
+  
+    const handleDivClick = () => {
+      // Focus on the input field when the div is clicked
+      inputRef.current?.focus();
+    };
+  
+    const handleDateChange = (e) => {
+      let originalDate = e.target.value;
+  
+      // Split the date into year, month, and day
+      let [year, month, day] = originalDate.split("-");
+      
+      // Convert the date format to dd-mm-yyyy
+      let convertedDate = `${day}-${month}-${year}`;
+      
+      // Set the original date value and the converted date in the state
+      onChangeDate(e); // Call the original date change function to set the date
+      setData({ ...data, dob: convertedDate }); // Set the converted date
+    };
 
   const takeOnlyNumbers = (value,name,max) => {
     const enteredValue = value.replace(/\D/g, '').slice(0, max)
@@ -106,6 +120,8 @@ const VendorFinancingForm = () => {
 
 const onSaveUserDetails = async (e) => {
     e.preventDefault()
+    setStep(2)
+    return
     try{
       if (!data.annualTurnover || !data.panNo || !data.name || !data.email) {
         toast.error('All Fields Are Required !')
@@ -255,120 +271,144 @@ const onSaveUserDetails = async (e) => {
       {step === 1 && (
         <>
           <div className="max-w-4xl lg:max-w-full mx-auto bg-gray-100 p-8 rounded-md">
-            <ol className="flex items-center w-full z-10 text-xs text-gray-900 font-medium sm:text-base ml-4 sm:ml-12">
-              <li className="flex w-full relative text-indigo-600 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-                <div className="block whitespace-nowrap z-10">
-                  <span className="w-6 h-6 bg-gray-100 border-2 border-transparent rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-white sm:w-10 sm:h-10"></span>
-                </div>
-              </li>
-              <li className="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-                <div className="block whitespace-nowrap z-10">
-                  <span className="w-6 h-6 bg-indigo-50 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-indigo-600 sm:w-10 sm:h-10">1</span>
-                </div>
-              </li>
-              <li className="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-                <div className="block whitespace-nowrap z-10">
-                  <span className="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">2</span>
-                </div>
-              </li>
-              <li className="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-                <div className="block whitespace-nowrap z-10">
-                  <span className="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">3</span>
-                </div>
-              </li>
-              <li className="flex w-full relative text-gray-900">
-                <div className="block whitespace-nowrap z-10">
-                  <span className="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">4</span>
-                </div>
-              </li>
-            </ol>
+  <ol className="flex items-center w-full z-10 text-xs text-gray-900 font-medium sm:text-base ml-4 sm:ml-12">
+    <li className="flex w-full relative text-indigo-600 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
+      <div className="block whitespace-nowrap z-10">
+        <span className="w-6 h-6 bg-gray-100 border-2 border-transparent rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-white sm:w-10 sm:h-10"></span>
+      </div>
+    </li>
+    <li className="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
+      <div className="block whitespace-nowrap z-10">
+        <span className="w-6 h-6 bg-indigo-50 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-indigo-600 sm:w-10 sm:h-10">1</span>
+      </div>
+    </li>
+    <li className="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
+      <div className="block whitespace-nowrap z-10">
+        <span className="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">2</span>
+      </div>
+    </li>
+    <li className="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
+      <div className="block whitespace-nowrap z-10">
+        <span className="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">3</span>
+      </div>
+    </li>
+    <li className="flex w-full relative text-gray-900">
+      <div className="block whitespace-nowrap z-10">
+        <span className="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">4</span>
+      </div>
+    </li>
+  </ol>
 
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-800">Application for vendor financing</h1>
-                <p className="text-gray-500 text-base">Add your personal information</p>
-              </div>
-            <RmBox/>
-            </div>
-            <hr className="border-gray-800" />
-            <form onSubmit={onSaveUserDetails}>
-              <div className="grid grid-cols-1 mt-4 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-lg font-medium text-gray-700 mb-1">Applicant Full Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={data.name}
-                    onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
-                    placeholder="Name as per PAN Card"
-                    className="w-1/2 uppercase bg-gray-100 py-2 px-3 text-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  />
-                  <hr className="border-gray-800" />
-                </div>
+  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+    <div>
+      <h1 className="text-3xl font-bold text-gray-800">Application for vendor financing</h1>
+      <p className="text-gray-500 text-base">Add your personal information</p>
+    </div>
+    <RmBox />
+  </div>
+  <hr className="border-gray-800" />
+  <form onSubmit={onSaveUserDetails}>
+    <div className="grid grid-cols-1 mt-4 md:grid-cols-2 gap-4">
+      <div>
+        <label className="block text-lg font-medium text-gray-700 mb-1">Applicant Full Name</label>
+        <input
+          type="text"
+          name="name"
+          value={data.name}
+          onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
+          placeholder="Name as per PAN Card"
+          className="w-full uppercase bg-gray-100 py-2 px-3 text-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+        <hr className="border-gray-800" />
+      </div>
 
-                <div>
-                  <label className="block text-lg font-medium text-gray-700 mb-1">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={data.email}
-                    onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
-                    placeholder="Enter your email"
-                    className="w-1/2 bg-gray-100 py-2 px-3 text-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  />
-                  <hr className="border-gray-800" />
-                </div>
+      <div>
+        <label className="block text-lg font-medium text-gray-700 mb-1">Email</label>
+        <input
+          type="email"
+          name="email"
+          value={data.email}
+          onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
+          placeholder="Enter your email"
+          className="w-full bg-gray-100 py-2 px-3 text-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+        <hr className="border-gray-800" />
+      </div>
 
-              </div>
-              <div className="mt-4">
-                <label className="block text-lg font-medium text-gray-700 mb-1">PAN Card Number</label>
-                <input
-                  type="text"
-                  name="panNo"
-                  value={data.panNo}
-                  onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
-                  placeholder="XXXX XXXX XXXX"
-                  className="w-1/2 bg-gray-100 py-2 px-3 text-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-                <hr className="border-gray-800 w-50" />
-              </div>
-              <div className="mt-4">
-                <label className="block text-lg font-medium text-gray-700 mb-1">Annual turnover</label>
-                <div className="flex flex-wrap bg-white text-sm gap-4 w-100 mb-2 mt-2">
-                  {[
-                    '1 Cr to 50 Cr',
-                    '50 Cr to 250 Cr',
-                    '250 Cr to 500 Cr',
-                    '500 Cr to 1000 Cr',
-                    '1000 Cr +',
-                  ].map((range) => (
-                    <button
-                      type="button"
-                      className={`px-3 py-1 rounded-md ${selectedRange === range ? 'bg-blue-200 border-blue-500 border' : 'bg-gray-100'
-                        } text-gray-700 hover:bg-blue-200 focus:outline-none`}
-                      key={range}
-                      onClick={() => {
-                        setSelectedRange(range);
-                        setData({ ...data, annualTurnover: range });
-                      }}
-                    >
-                      {range}
-                    </button>
-                  ))}
-                </div>
-                <hr className="border-gray-800" />
-              </div>
-              <div className="flex flex-col sm:flex-row justify-between mt-6">
-                <button type="button"></button>
-                <button
-                  type="submit"
-                  className="w-full sm:w-auto px-4 py-2 mt-14 sm:mb-0 rounded-md bg-green-500 text-white hover:bg-green-600 focus:outline-none"
-                >
-                  proceed to next step
-                </button>
-              </div>
-            </form>
-          </div>
+      <div onClick={handleDivClick} className="cursor-pointer">
+      <label className="block text-sm font-bold text-gray-700 mb-1" htmlFor="dob">Date of Birth</label>
+      <input
+        ref={inputRef}
+        id="dob"
+        type="date"
+        value={date}
+        onChange={handleDateChange} // Use the updated handleDateChange function
+        className="block w-full rounded-lg bg-white border border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none sm:text-sm p-2"
+      />
+      <hr className="border-gray-800" />
+    </div>
+
+
+      <div>
+        <label className="block text-sm font-bold text-gray-700 mb-1">PIN Code</label>
+        <input
+          type="tel"
+          name="pinCode"
+          value={data.pinCode}
+          onChange={(e) => takeOnlyNumbers(e.target.value, e.target.name, 6)}
+          placeholder="PinCode"
+          className="w-full bg-gray-100 text-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+        <hr className="border-gray-800" />
+      </div>
+
+      <div>
+        <label className="block text-lg font-medium text-gray-700 mb-1">PAN Card Number</label>
+        <input
+          type="text"
+          name="panNo"
+          value={data.panNo}
+          onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
+          placeholder="XXXX XXXX XXXX"
+          className="w-full bg-gray-100 py-2 px-3 text-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+        <hr className="border-gray-800 w-100" />
+      </div>
+
+      <div>
+        <label className="block text-lg font-medium text-gray-700 mb-1">Annual turnover</label>
+        <select
+          className="block w-full bg-white text-gray-700 border border-gray-300 rounded-md py-0 px-3 mb-2 mt-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          value={selectedRange}
+          onChange={(e) => {
+            const selectedValue = e.target.value;
+            setSelectedRange(selectedValue);
+            setData({ ...data, annualTurnover: selectedValue });
+          }}
+        >
+          <option value="" disabled>Select annual turnover</option>
+          {['1 Cr to 50 Cr', '50 Cr to 250 Cr', '250 Cr to 500 Cr', '500 Cr to 1000 Cr', '1000 Cr +'].map((range) => (
+            <option key={range} value={range}>
+              {range}
+            </option>
+          ))}
+        </select>
+        <hr className="border-gray-800" />
+      </div>
+    </div>
+
+    <div className="flex flex-col sm:flex-row justify-between mt-6">
+      <button type="button"></button>
+      <button
+        type="submit"
+        className="w-full sm:w-auto px-4 py-2 mt-14 sm:mb-0 rounded-md bg-green-500 text-white hover:bg-green-600 focus:outline-none"
+      >
+        proceed to next step
+      </button>
+    </div>
+  </form>
+</div>
+
         </>
       )}
 

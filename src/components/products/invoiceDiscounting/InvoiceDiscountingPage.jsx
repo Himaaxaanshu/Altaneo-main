@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import Partners from '../../Partners/Partners';
 import Footer from '../../Footer/Footer';
@@ -33,14 +33,13 @@ const testimonials = [
 
 const InvoiceDiscountingPage = () => {
     const [currentSlide, setCurrentSlide] = useState(0)
-    const nextSlide = () => {
-        setCurrentSlide((prevSlide) => (prevSlide + 1) % testimonials.length);
-    }
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % testimonials.length);
+        }, 3000); // Change every 3 seconds
 
-    const previousSlide = () => {
-        setCurrentSlide((prevSlide) => (prevSlide - 1 + testimonials.length) % testimonials.length);
-    }
-
+        return () => clearInterval(interval);
+    }, [testimonials.length]);
     const videoRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const history = useHistory()
@@ -136,40 +135,28 @@ const InvoiceDiscountingPage = () => {
                             </p>
                             <p className="text-gray-700 text-base mb-6">Get help from our experts to start fast and run efficiently.</p>
                         </div>
-                        <div className="md:w-2/4 flex justify-center items-center">
-                            <div className="relative w-full">
-                                <SwitchTransition>
-                                    <CSSTransition
-                                        key={currentSlide}
-                                        addEndListener={(node, done) => {
-                                            node.addEventListener('transitionend', done, false);
-                                        }}
-                                        classNames={{
-                                            enter: 'transition-opacity duration-1000 ease-in-out',
-                                            enterActive: 'opacity-100',
-                                            exit: 'transition-opacity duration-1000 ease-in-out',
-                                            exitActive: 'opacity-0'
-                                        }}
-                                    >
-                                        <div className="flex flex-col p-8 items-center text-center">
-                                            <blockquote className="text-black mt-12 italic">{testimonials[currentSlide].quote}</blockquote>
-                                            <p className="text-black font-bold text-md p-2 mt-4">{testimonials[currentSlide].author}</p>
-                                            <p className="text-black  text-sm mb-4">{testimonials[currentSlide].position}</p>
-                                            {/* <img src={testimonials[currentSlide].logo} alt="Logo" className="mt-4 w-24 h-auto" /> */}
-                                        </div>
-                                    </CSSTransition>
-                                </SwitchTransition>
-                                <div className="flex justify-between mt-4">
-                                    <button className="w-10 h-10 bg-gray-200 text-black rounded-full hover:bg-gray-400 transition-all flex items-center justify-center" onClick={previousSlide}>
-                                        &lt;
-                                    </button>
-                                    <button className="w-10 h-10 bg-gray-200 text-black rounded-full hover:bg-gray-400 transition-all flex items-center justify-center" onClick={nextSlide}>
-                                        &gt;
-                                    </button>
-                                </div>
+                        <div className="md:w-3/5 flex justify-center items-center p-6">
+                        <div className="md:w-3/5 flex justify-center items-center p-6">
+    <div className="relative w-full bg-white rounded-lg shadow-md overflow-hidden p-8 h-[300px]"> {/* Fixed height */}
+        <div
+            key={currentSlide}
+            className="flex flex-col items-center text-center transition-opacity duration-700 opacity-100 h-full justify-center"
+        >
+            <blockquote className="text-gray-700 text-lg font-light italic leading-relaxed mb-6">
+                {testimonials[currentSlide].quote}
+            </blockquote>
+            <p className="text-gray-900 font-semibold text-lg">
+                {testimonials[currentSlide].author}
+            </p>
+            <p className="text-gray-500 text-sm">
+                {testimonials[currentSlide].position}
+            </p>
+        </div>
+    </div>
+</div>
 
-                            </div>
-                        </div>
+</div>
+
                     </div>
                 </div>
 
@@ -182,19 +169,20 @@ const InvoiceDiscountingPage = () => {
                 </div>
 
                 <Numbers />
-                -  <div className="flex items-center justify-center  h-112 md:h-128 mb-4 mt-20 w-full px-4 md:px-0">
-                    <div className="w-full md:w-3/4 lg:w-2/3  bg-white">
+                <div className="flex items-center justify-center h-112 md:h-128 lg:h-144 mb-4 mt-10 w-full px-2 md:px-4 lg:px-0">
+                    <div className="w-full sm:w-11/12 md:w-3/4 lg:w-2/3 bg-white">
                         <video
                             ref={videoRef}
                             className="w-full h-full rounded-2xl object-cover"
                             controls
                             onClick={handlePlayPause}
                         >
-                            <source src={imgUrl + '/img/others/sampleVid.mp4'} type="video/mp4" />
+                            <source src={imgUrl + '/img/others/invoicediscounting.mp4'} type="video/mp4" />
                             Your browser does not support the video tag.
                         </video>
                     </div>
                 </div>
+
                 <div className="py-8 bg-gray-100 text-center w-full">
                     <h2 className="text-5xl font-bold mt-4 mb-2">Products</h2>
                     <p className="max-w-md mx-auto text-base mb-4">

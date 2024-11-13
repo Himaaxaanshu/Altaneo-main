@@ -60,15 +60,15 @@ const Faqs = () => {
     return (
         <div className=''>
             <div className='d-flex justify-content-center'>
-                <h1 className='text-black text-2xl font-bold'>Frequently Asked Questions</h1>
+                <h1 className='text-black text-2xl font-serif font-bold'>Frequently Asked Questions</h1>
             </div>
-            <Container className='grid divide-y divide-neutral-200 max-w-5xl mx-auto mt-8'>
+            <Container className='grid divide-y divide-neutral-200 max-w-5xl mx-auto mt-8 p-4 '>
                 <Accordion>
                     {faqArray.map((faq, index) => {
                         return (
-                            <Accordion.Item eventKey={index.toString()} className='mb-2'>
-                                <Accordion.Header>{faq.qstn}</Accordion.Header>
-                                <Accordion.Body className='text-muted'>
+                            <Accordion.Item eventKey={index.toString()} className='mb-2 '>
+                                <Accordion.Header className='font-serif'>{faq.qstn}</Accordion.Header>
+                                <Accordion.Body className='text-muted font-serif'>
                                     {faq.ans}
                                 </Accordion.Body>
                             </Accordion.Item>

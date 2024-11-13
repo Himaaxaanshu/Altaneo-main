@@ -72,13 +72,13 @@ const ContactUs = () => {
   return (
     <section className="lg:my-5">
       <div className="py-1 sm:py-16 block lg:py-24 relative bg-opacity-50 z-0">
-        <h2 className="text-black text-center font-semibold font-serif text-3xl mt-4 underline">Contact Us</h2>
+        <h2 className="text-black text-center font-semibold font-serif text-3xl mt-4 ">Contact Us</h2>
         <div className="flex flex-col md:flex-row justify-between items-start mt-10 mx-auto max-w-5xl">
           <div className="flex-1 p-6 bg-gray-100 rounded-lg text-gray-700 md:mr-6 mb-6 md:mb-0">
             <h3 className="text-2xl font-semibold flex items-center text-black mb-2 font-serif">
               Send us a message
             </h3>
-            <p className="mt-1 text-base text-gray-600 mb-6">
+            <p className="mt-1 text-base font-serif text-gray-600 mb-6">
               Zero paper work.<br />
               Instant approval.<br />
               Real-time bill settlement.<br />
@@ -86,16 +86,16 @@ const ContactUs = () => {
             </p>
             <ul className="space-y-4">
               <li className="flex items-center">
-                < IoMailSharp className='mr-2' color='blue' size={20} />
+                < IoMailSharp className='mr-2 font-serif' color='blue' size={20} />
                 info@altaneofin.in
               </li>
-              <li className="flex items-center">
-                <FaPhoneAlt color='blue' className='mr-1' />
+              <li className="flex items-center font-serif">
+                <FaPhoneAlt color='blue' className='mr-1 font-serif' />
                 +91 9817741345
               </li>
-              <li className="flex items-start">
+              <li className="flex items-start font-serif">
                 <MdLocationPin color='blue' size={22} />
-                <div>
+                <div className='font-serif'>
                   934, Block-3, Spaze I tech park <br />
                   sector 49, Sohna Road, Gurugram
                 </div>
@@ -106,7 +106,7 @@ const ContactUs = () => {
           <div className="flex-1 p-6 bg-gray-100 rounded-lg w-full">
             <form className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+                <label htmlFor="name" className="block font-serif text-sm font-medium text-gray-700">Name</label>
                 <input
                   type="text"
                   name="name"
@@ -116,11 +116,11 @@ const ContactUs = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="mt-1 p-2 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 p-2 w-full font-serif shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
+                <label htmlFor="email" className="block font-serif text-sm font-medium text-gray-700">Email address</label>
                 <input
                   type="email"
                   name="email"
@@ -130,11 +130,11 @@ const ContactUs = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="mt-1 p-2 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 p-2 w-full font-serif shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone number</label>
+                <label htmlFor="phone" className="block text-sm font-serif font-medium text-gray-700">Phone number</label>
                 <input
                   type="tel"
                   name="phone"
@@ -144,11 +144,11 @@ const ContactUs = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="mt-1 p-2 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 p-2 w-full font-serif shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
+                <label htmlFor="message" className="block font-serif text-sm font-medium text-gray-700">Message</label>
                 <textarea
                   id="message"
                   name="message"
@@ -157,20 +157,20 @@ const ContactUs = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  className="mt-1 p-2 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 p-2 w-full font-serif shadow-sm sm:text-sm border-gray-300 rounded-md"
                 ></textarea>
               </div>
               <Captcha onChange={onChangeCaptcha} regenerateCaptcha={regenerate} />
-              <div className="flex justify-end">
+              <div className="flex font-serif justify-end">
                 {showCaptchaError ? (
-                  <small className="text-red-500 mt-2">CAPTCHA is incorrect.</small>
+                  <small className="text-red-500 font-serif mt-2">CAPTCHA is incorrect.</small>
                 ) : (
                   <>
                   </>
                 )}
                 <button
                   type="submit"
-                  className="inline-flex items-center py-2 px-4 mt-4 md:mt-0 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="inline-flex font-serif items-center py-2 px-4 mt-4 md:mt-0 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   onClick={handleSubmit}
                 >Send
                 </button>

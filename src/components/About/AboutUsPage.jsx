@@ -5,6 +5,8 @@ import { IoMdTime } from "react-icons/io";
 import { GrSecure } from "react-icons/gr";
 import { TbNotesOff } from "react-icons/tb";
 import Topbar from '../common/Topbar';
+import Faqs from '../faq\'s/Faqs'
+import Connect from '../common/Connect';
 
 const imgUrl = import.meta.env.VITE_IMAGE_URL
 
@@ -38,6 +40,46 @@ const AboutUsPage = () => {
                     </div>
                 </div>
             </section>
+            <div className="bg-white py-12">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-left p-2">
+                        <h2 className="text-3xl font-bold text-gray-900">Our Features</h2>
+                        <p className="mt-4 text-base text-gray-600 max-w-2xl">
+                            At Altaneo Finance, we empower businesses to achieve financial freedom with our innovative fintech
+                            solutions. Our platform is designed to streamline your financial processes and enhance your supply
+                            chain efficiency. Join us at Altaneo Finance, where bespoke financial solutions are designed to propel
+                            your business forward. Explore our services today!
+                        </p>
+                    </div>
+
+                    <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="p-6 bg-white shadow-lg rounded-lg">
+                            <h3 className="text-3xl font-semibold text-gray-900">Ethical obligation</h3>
+                            <p className="mt-4 text-base text-gray-600">
+                                At Altaneo Finance, we believe that financial success should go hand-in-hand with social and environmental
+                                responsibility. We don’t just invest in businesses—we invest in a better future for all.
+                            </p>
+                        </div>
+
+                        <div className="p-6 bg-white shadow-lg rounded-lg">
+                            <h3 className="text-3xl font-semibold text-gray-900">Safe and Secure</h3>
+                            <p className="mt-4 text-base text-gray-600">
+                                Secure and user-friendly platform that empowers individuals and organizations to easily send and
+                                receive payments globally.
+                            </p>
+                        </div>
+
+                        <div className="p-6 bg-white shadow-lg rounded-lg">
+                            <h3 className="text-3xl font-semibold text-gray-900">Transparency & Simplicity</h3>
+                            <p className="mt-4  text-base text-gray-600">
+                                We prioritize the security of our users' information and transactions, utilizing the latest technology
+                                and best practices to keep your data safe.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <section class="relative py-32 bg-slate-50">
                 <div class="items-center flex flex-wrap">
@@ -73,6 +115,7 @@ const AboutUsPage = () => {
                         </div>
                     </div>
 
+
                     <div class="w-full md:w-5/12 ml-auto mr-auto px-4">
                         <div class="md:pr-12">
                             <h3 class="text-3xl font-semibold text-black font-serif">We are Providing Supply Chain Finance for Your Business</h3>
@@ -88,6 +131,9 @@ const AboutUsPage = () => {
                     </div>
                 </div>
             </section>
+            <Connect />
+            <Faqs />
+
             <Footer />
         </div>
     )

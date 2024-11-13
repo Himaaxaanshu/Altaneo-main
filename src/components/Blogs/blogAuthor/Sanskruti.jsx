@@ -17,7 +17,7 @@ const Sanskruti = () => {
             route: 'FintechManage',
             oneLine: "Financial Technology, or FinTech, has revolutionised how we manage our finances. Financial Technology encompasses...",
             author: 'Sanskruti',
-            designation: 'Accounting & Finance Intern'
+            designation: 'Accounts and HR Executive'
          }
     ]
 

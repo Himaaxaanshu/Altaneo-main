@@ -14,15 +14,15 @@ const Login = () => {
   const dispatch = useDispatch()
   const [showOtpInput, setShowOtpInput] = useState(false)
 
-useEffect(()=>{
-  sessionStorage.clear()
-},[])
+  useEffect(() => {
+    sessionStorage.clear()
+  }, [])
 
   const [data, setData] = useState({
     mobile: '',
     otp: ''
   })
-  
+
   const onChangeMobile = (e) => {
     const enteredMobile = e.target.value.replace(/\D/g, '').slice(0, 10)
     setData({ ...data, mobile: enteredMobile })
@@ -103,16 +103,18 @@ useEffect(()=>{
     <div className="flex flex-col lg:flex-row h-screen overflow-hidden">
       <div className="flex-1 flex items-center justify-center bg-white lg:p-0 relative">
         <div className="relative w-full h-full lg:h-full overflow-hidden flex items-center justify-center">
-          <h1 className="absolute top-20 lg:top-28 left-1/2 transform -translate-x-1/2 text-6xl sm:text-4xl lg:text-5xl font-serif font-bold z-10 whitespace-nowrap bg-gradient-to-r from-blue-400 to-blue-900 bg-clip-text text-transparent"
+          <h1
+            className="absolute top-20 lg:top-28 left-1/2 transform -translate-x-1/2 text-6xl sm:text-4xl lg:text-5xl font-serif font-bold z-20 whitespace-nowrap bg-gradient-to-r from-blue-400 to-blue-900 bg-clip-text text-transparent"
           >
             ALTANEO
           </h1>
           <img
             src={imgUrl + '/icon/logo.png'}
             alt="Background"
-            className="absolute top-32 lg:top-24 left-1/2 transform -translate-x-1/2 w-full sm:w-3/4 h-auto object-cover"
+            className="absolute top-40 lg:mt-2 lg:top-36 left-1/2 transform -translate-x-1/2 w-2/3 sm:w-2/3 lg:w-75 h-auto object-cover z-10"
           />
         </div>
+
       </div>
       <div className="flex-1 flex flex-col items-center justify-center bg-white p-4 lg:p-8">
         <h2 className="font-semibold text-2xl lg:text-3xl mb-4 text-center bg-gradient-to-r from-blue-400 to-blue-900 bg-clip-text text-transparent">
