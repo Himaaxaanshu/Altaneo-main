@@ -7,7 +7,9 @@ import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { toast } from 'react-toastify';
 import RmBox from '../Rmbox'
+import DatePicker from "react-datepicker";
 
+import "react-datepicker/dist/react-datepicker.css";
 // const todayDate = new Date()
 
 let baseUrl = import.meta.env.VITE_BASEURL
@@ -87,20 +89,19 @@ const VendorFinancingForm = () => {
       inputRef.current?.focus();
     };
   
-    const handleDateChange = (e) => {
-      let originalDate = e.target.value;
-  
-      // Split the date into year, month, and day
-      let [year, month, day] = originalDate.split("-");
-      
-      // Convert the date format to dd-mm-yyyy
-      let convertedDate = `${day}-${month}-${year}`;
-      
-      // Set the original date value and the converted date in the state
-      onChangeDate(e); // Call the original date change function to set the date
-      setData({ ...data, dob: convertedDate }); // Set the converted date
+    const handleDateChange = (date) => {
+      const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+      setData({ ...data, dob: formattedDate });
     };
 
+    const [selectedDate, setSelectedDate] = useState(null);
+  const datePickerRef = useRef(null);
+
+  const handleDatePickerOpen = () => {
+    if (datePickerRef.current) {
+      datePickerRef.current.setOpen(true); // Opens the calendar directly
+    }
+  };
   const takeOnlyNumbers = (value,name,max) => {
     const enteredValue = value.replace(/\D/g, '').slice(0, max)
     setData({ ...data, [name]: enteredValue })
@@ -168,6 +169,7 @@ const onSaveUserDetails = async (e) => {
 
   const onSubmitSecondForm = (e) => {
     e.preventDefault()
+    setStep(3)
     console.log(data.gender,data.dob,data.pinCode)
     console.log('saveData---',saveData)
     try{
@@ -189,6 +191,7 @@ const onSaveUserDetails = async (e) => {
 
   const onSubmitThirdForm = async (e) => {
     e.preventDefault()
+    setStep(3)
     if(!data.businessType || !data.businessPinCode || !data.businessAge || !data.yearlySales){
       toast.error('Please Fill All Fields !')
       return
@@ -271,33 +274,29 @@ const onSaveUserDetails = async (e) => {
       {step === 1 && (
         <>
           <div className="max-w-4xl lg:max-w-full mx-auto bg-gray-100 p-8 rounded-md">
-  <ol className="flex items-center w-full z-10 text-xs text-gray-900 font-medium sm:text-base ml-4 sm:ml-12">
-    <li className="flex w-full relative text-indigo-600 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-      <div className="block whitespace-nowrap z-10">
-        <span className="w-6 h-6 bg-gray-100 border-2 border-transparent rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-white sm:w-10 sm:h-10"></span>
-      </div>
-    </li>
-    <li className="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-      <div className="block whitespace-nowrap z-10">
-        <span className="w-6 h-6 bg-indigo-50 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-indigo-600 sm:w-10 sm:h-10">1</span>
-      </div>
-    </li>
-    <li className="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-      <div className="block whitespace-nowrap z-10">
-        <span className="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">2</span>
-      </div>
-    </li>
-    <li className="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-      <div className="block whitespace-nowrap z-10">
-        <span className="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">3</span>
-      </div>
-    </li>
-    <li className="flex w-full relative text-gray-900">
-      <div className="block whitespace-nowrap z-10">
-        <span className="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">4</span>
-      </div>
-    </li>
-  </ol>
+          <ol class="flex items-center w-full text-xs text-gray-900 font-medium sm:text-base ml-4 sm:ml-12">
+            <li class="flex w-full relative text-indigo-600 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
+              <div class="block whitespace-nowrap z-10">
+                <span class="w-6 h-6 bg-gray-100 border-2 border-transparent rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-white sm:w-10 sm:h-10"></span>
+              </div>
+            </li>
+            <li class="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
+              <div class="block whitespace-nowrap z-10">
+                <span class="w-6 h-6 bg-indigo-50 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-gray-800 sm:w-10 sm:h-10">1</span>
+              </div>
+            </li>
+            
+            <li class="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
+              <div class="block whitespace-nowrap z-10">
+                <span class="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto  mb-3 text-sm sm:w-10 sm:h-10">2</span>
+              </div>
+            </li>
+            <li class="flex w-full relative text-gray-900">
+              <div class="block whitespace-nowrap z-10">
+                <span class="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">3</span>
+              </div>
+            </li>
+          </ol>
 
   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
     <div>
@@ -335,31 +334,40 @@ const onSaveUserDetails = async (e) => {
         <hr className="border-gray-800" />
       </div>
 
-      <div onClick={handleDivClick} className="cursor-pointer">
-      <label className="block text-sm font-bold text-gray-700 mb-1" htmlFor="dob">Date of Birth</label>
-      <input
-        ref={inputRef}
-        id="dob"
-        type="date"
-        value={date}
-        onChange={handleDateChange} // Use the updated handleDateChange function
-        className="block w-full rounded-lg bg-white border border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none sm:text-sm p-2"
-      />
-      <hr className="border-gray-800" />
-    </div>
+      <<div onClick={handleDivClick} className="cursor-pointer">
+  <label className="block text-sm font-bold text-gray-700 mb-1" htmlFor="dob">Date of Birth</label>
+  
+  {/* Smaller Date Picker Container */}
+  <div
+    className="date-picker-container p-2 w-48 border rounded"
+    onClick={handleDatePickerOpen}
+    style={{ cursor: 'pointer' }}
+  >
+    <DatePicker
+      ref={datePickerRef}
+      selected={new Date()}
+      onChange={(date) => console.log(date)} // Replace with your state setter or other logic
+      placeholderText="Select a date"
+      className="form-control w-full" // Ensures the DatePicker takes full width of its parent
+    />
+  </div>
+
+  <hr className="border-gray-800" />
+</div>
 
 
-      <div>
-        <label className="block text-sm font-bold text-gray-700 mb-1">PIN Code</label>
+
+<div>
+        <label className="block text-lg font-medium text-gray-700 mb-1">PinCode</label>
         <input
-          type="tel"
-          name="pinCode"
-          value={data.pinCode}
-          onChange={(e) => takeOnlyNumbers(e.target.value, e.target.name, 6)}
-          placeholder="PinCode"
-          className="w-full bg-gray-100 text-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="text"
+          name="panNo"
+          value={data.pincode}
+          onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
+          placeholder="123456"
+          className="w-full bg-gray-100 py-2 px-3 text-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
-        <hr className="border-gray-800" />
+        <hr className="border-gray-800 w-100" />
       </div>
 
       <div>
@@ -413,105 +421,6 @@ const onSaveUserDetails = async (e) => {
       )}
 
       {step == 2 && (<>
-        <ol class="flex items-center w-full text-xs text-gray-900 font-medium sm:text-base ml-4 sm:ml-12">
-          <li class="flex w-full relative text-indigo-600 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-            <div class="block whitespace-nowrap z-10">
-              <span class="w-6 h-6 bg-gray-1000 border-2 border-transparent rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-white sm:w-10 sm:h-10"></span>
-            </div>
-          </li>
-          <li class="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-            <div class="block whitespace-nowrap z-10">
-              <span class="w-6 h-6 bg-indigo-600 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-gray-800 sm:w-10 sm:h-10">1</span>
-            </div>
-          </li>
-          <li class="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-            <div class="block whitespace-nowrap z-10">
-              <span class="w-6 h-6 bg-indigo-50 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-indigo-600 sm:w-10 sm:h-10">2</span>
-            </div>
-          </li>
-          <li class="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-            <div class="block whitespace-nowrap z-10">
-              <span class="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">3</span>
-            </div>
-          </li>
-          <li class="flex w-full relative text-gray-900">
-            <div class="block whitespace-nowrap z-10">
-              <span class="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">4</span>
-            </div>
-          </li>
-        </ol>
-        <div class="max-w-4xl lg:max-w-full mx-auto bg-gray-100 p-8 rounded-md ">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-            <div>
-              <h1 class="text-3xl font-bold text-gray-800">Application for vendor financing</h1>
-              <p class="text-gray-500 text-base">Add your personal information</p>
-            </div>
-          <RmBox/>
-          </div>
-          <hr class="border-gray-800" />
-          <form>
-            <div className="grid grid-cols-1 mt-4 md:grid-cols-2 gap-8">
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Date of Birth</label>
-                <input
-                  type="date"
-                  value={date}
-                  onChange={onChangeDate}
-                  className="block w-90 rounded-md bg-gray-100 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
-                />
-                <hr class="border-gray-800" />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Gender</label>
-                <div className="flex gap-2 mt-2">
-                  {['Male', 'Female'].map((gender, index) => (
-                    <button
-                      key={gender}
-                      type="button"
-                      className={`px-4 py-2 rounded-md focus:outline-none ${data.gender === gender ? 'bg-blue-200 text-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-blue-200'
-                        }`}
-                      onClick={() => setData({ ...data, gender: gender })
-                    }>
-                      {gender}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="mt-4">
-              <label className="block text-sm font-bold text-gray-700 mb-1">PIN Code</label>
-              <input
-                type="tel"
-                value={data.pinCode}
-                name="pinCode"
-                onChange={(e) => takeOnlyNumbers(e.target.value, e.target.name,6)}
-                placeholder="PinCode"
-                className="w-1/2 bg-gray-100 text-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-              <hr class="border-gray-800 w-50" />
-            </div>
-            <div className="flex flex-col sm:flex-row justify-between mt-8">
-              <button
-                type="button"
-
-                className="w-full sm:w-auto mb-0 mt-14 sm:mb-0 px-4 py-2 rounded-md bg-gray-100 text-gray-700 hover:bg-yellow-300 focus:outline-none"
-              >
-
-              </button>
-              <button
-                type="submit"
-                onClick={onSubmitSecondForm}
-                className="w-full sm:w-auto px-4 py-2 mt-14  sm:mb-0 rounded-md bg-green-500 text-white hover:bg-green-600 focus:outline-none"
-              >
-                proceed to next step
-              </button>
-            </div>
-          </form>
-        </div>
-      </>
-      )}
-
-      {step === 3 && (
         <div className="max-w-4xl lg:max-w-full mx-auto bg-gray-100 p-2  rounded-md">
           <ol class="flex items-center w-full text-xs text-gray-900 font-medium sm:text-base ml-4 sm:ml-12">
             <li class="flex w-full relative text-indigo-600 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
@@ -524,19 +433,15 @@ const onSaveUserDetails = async (e) => {
                 <span class="w-6 h-6 bg-indigo-600 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-gray-800 sm:w-10 sm:h-10">1</span>
               </div>
             </li>
-            <li class="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-              <div class="block whitespace-nowrap z-10">
-                <span class="w-6 h-6 bg-indigo-600 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">2</span>
-              </div>
-            </li>
+           
             <li class="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-gray-200 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
               <div class="block whitespace-nowrap z-10">
-                <span class="w-6 h-6 bg-indigo-50 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto text-indigo-600 mb-3 text-sm sm:w-10 sm:h-10">3</span>
+                <span class="w-6 h-6 bg-indigo-50 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto text-indigo-600 mb-3 text-sm sm:w-10 sm:h-10">2</span>
               </div>
             </li>
             <li class="flex w-full relative text-gray-900">
               <div class="block whitespace-nowrap z-10">
-                <span class="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">4</span>
+                <span class="w-6 h-6 bg-gray-50 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">3</span>
               </div>
             </li>
           </ol>
@@ -664,6 +569,111 @@ const onSaveUserDetails = async (e) => {
             </button>
           </div>
         </div>
+        
+      </>
+      )}
+
+      {step === 3 && (
+        <div className="max-w-4xl lg:max-w-full mx-auto bg-gray-100 p-8 rounded-md">
+        <ol class="flex items-center w-full text-xs text-gray-900 font-medium sm:text-base ml-4 sm:ml-12">
+          <li class="flex w-full relative text-indigo-600 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
+            <div class="block whitespace-nowrap z-10">
+              <span class="w-6 h-6 bg-gray-100 border-1 border-transparent rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-white sm:w-10 sm:h-10"></span>
+            </div>
+          </li>
+          <li class="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
+            <div class="block whitespace-nowrap z-10">
+              <span class="w-6 h-6 bg-indigo-600 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-gray-800 sm:w-10 sm:h-10">1</span>
+            </div>
+          </li>
+          <li class="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
+            <div class="block whitespace-nowrap z-10">
+              <span class="w-6 h-6 bg-indigo-600 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">2</span>
+            </div>
+          </li>
+          
+          <li class="flex w-full relative text-gray-900">
+            <div class="block whitespace-nowrap z-10">
+              <span class="w-6 h-6 bg-indigo-50 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto mb-3 text-indigo-600 text-sm sm:w-10 sm:h-10">3</span>
+            </div>
+          </li>
+        </ol>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800">Application for vendor financing</h1>
+            <p className="text-gray-500 text-base">Add your business information</p>
+          </div>
+          <RmBox/>
+        </div>
+        <hr className="border-gray-800" />
+        <div className="container mx-auto p-4">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-gray-100 p-3 rounded-lg">
+              <label className="block text-gray-700 text-lg font-bold mb-2">Bank Statement (Past 12 months)</label>
+              <input
+                type="file"
+                className="w-full py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={(e) => onFileChange(e, setBankStatementFile)}
+              />
+            </div>
+            <div className="bg-gray-100 p-3 rounded-lg">
+              <label className="block text-gray-700 text-lg font-bold mb-2">Copy Of Agreement</label>
+              <input
+                type="file"
+                className="w-full py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={(e) => onFileChange(e, setCopyOfAgreementFile)}
+              />
+            </div>
+            <div className="bg-gray-100 p-3 rounded-lg">
+              <label className="block text-gray-700 text-lg font-bold mb-2">Audited Financials</label>
+              <input
+                type="file"
+                className="w-full py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={(e) => onFileChange(e, setAuditedFinancialsFile)}
+              />
+            </div>
+            <div className="bg-gray-100 p-3 rounded-lg">
+              <label className="block text-gray-700 text-lg font-bold mb-2">Purchase Order</label>
+              <input
+                type="file"
+                className="w-full py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={(e) => onFileChange(e, setPurchaseOrderFile)}
+              />
+            </div>
+
+            <div className='px-4'>
+                <label className="block text-lg font-medium text-gray-700 mb-1">Buyer Name</label>
+                <input
+                  type="text"
+                  name="buyerName"
+                  value={data.buyerName}
+                  onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
+                  placeholder="Enter your Buyer Name"
+                  className="w-1/2  bg-gray-100 py-2 px-3 text-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+                <hr className="border-gray-800" />
+              </div>
+
+              <div className="flex flex-col sm:flex-row justify-between mt-8">
+            <button
+              type="button"
+              className="w-full sm:w-auto mb-0 mt-14 sm:mb-0 px-4 py-2 rounded-md bg-gray-100 text-gray-700 hover:bg-yellow-300 focus:outline-none"
+            >
+            </button>
+            <button
+              type="button"
+              onClick={onClickSubmit}
+              className="w-full sm:w-auto px-4 py-2 mt-14 sm:mb-0 rounded-md bg-green-500 text-white hover:bg-green-600 focus:outline-none"
+            >
+              Submit this application form
+            </button>
+          </div>
+
+          </div>
+     
+        </div>
+      </div>
       )}
 
       {step === 4 && (
