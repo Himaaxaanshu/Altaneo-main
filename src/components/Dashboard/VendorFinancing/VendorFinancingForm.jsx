@@ -10,7 +10,7 @@ import RmBox from '../Rmbox'
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
-// const todayDate = new Date()
+
 
 let baseUrl = import.meta.env.VITE_BASEURL
 
@@ -85,7 +85,7 @@ const VendorFinancingForm = () => {
     const inputRef = useRef(null);
   
     const handleDivClick = () => {
-      // Focus on the input field when the div is clicked
+     
       inputRef.current?.focus();
     };
   
@@ -95,101 +95,117 @@ const VendorFinancingForm = () => {
     };
 
     const [selectedDate, setSelectedDate] = useState(null);
-  const datePickerRef = useRef(null);
+    const datePickerRef = useRef(null);
 
-  const handleDatePickerOpen = () => {
-    if (datePickerRef.current) {
-      datePickerRef.current.setOpen(true); // Opens the calendar directly
-    }
-  };
-  const takeOnlyNumbers = (value,name,max) => {
+    const handleDatePickerOpen = () => {
+      if (datePickerRef.current) {
+        datePickerRef.current.setOpen(true); // Opens the calendar directly
+      }
+    };
+    const takeOnlyNumbers = (value,name,max) => {
     const enteredValue = value.replace(/\D/g, '').slice(0, max)
     setData({ ...data, [name]: enteredValue })
-  }
+    }
 
-  const onChangeGSTNumber=(value)=>{
+    const onChangeGSTNumber=(value)=>{
     setData({...data,gstNo:value })
-  }
+    }
 
 
-  const onFileChange = (e, setFile) => {
-    const file = e.target.files[0];
-    setFile(file);
-    console.log(file);
-  }
+    const onFileChange = (e, setFile) => {
+      const file = e.target.files[0];
+      setFile(file);
+      console.log(file);
+    }
 
 
-const onSaveUserDetails = async (e) => {
-    e.preventDefault()
-    setStep(2)
-    return
-    try{
-      if (!data.annualTurnover || !data.panNo || !data.name || !data.email) {
-        toast.error('All Fields Are Required !')
-        return
-      } 
-      else {
-        let name=data.name
-        let body = {
-          turnover: data.annualTurnover,
-          panCardNumber: data.panNo,
-          fullName: name.toUpperCase().trim(),
-          email: data.email,
+    const onSaveUserDetails = async (e) => {
+      e.preventDefault();
+      setStep(2)
+    
+      try {
+       
+        if (
+          !data.annualTurnover?.trim() || 
+          !data.panNo?.trim() || 
+          !data.name?.trim() || 
+          !data.email?.trim() || 
+          !data.dob || 
+          !data.pincode?.trim()
+        ) {
+          toast.error('All Fields Are Required!');
+          return;
         }
-        console.log('body---',body)
-        const response = await fetch(`${baseUrl}/saveUserDetails?uuid=${uuid}`,{
+        
+    
+        // Prepare the request body
+        const body = {
+          turnover: data.annualTurnover.trim(),
+          panCardNumber: data.panNo.trim(),
+          fullName: data.name.toUpperCase().trim(),
+          email: data.email.trim(),
+          dob: data.dob,
+          pinCode: data.pincode.trim(),
+        };
+        console.log('body---', body);
+    
+        // Make the API call
+        const response = await fetch(`${baseUrl}/saveUserDetails?uuid=${uuid}`, {
           method: 'POST',
           body: JSON.stringify(body),
-          headers: { 'Content-type': 'application/json'}
-        })
-        const res = await response.json()
-        console.log('First res---', res)
-        if (res.statuscode === 200){ 
-          setSaveData({...saveData,
-            pinCode:res.pincode,
-            dob:res.dateOfBirth,
-            gender:res.gender,
-          })
-          setStep(2)
-          return
+          headers: { 'Content-type': 'application/json' },
+        });
+        const res = await response.json();
+        console.log('First res---', res);
+    
+        // Handle the response
+        if (res.statuscode === 200) {
+          setSaveData({
+            ...saveData,
+            pinCode: res.pincode,
+            dob: res.dateOfBirth,
+            gender: res.gender,
+          });
+          setStep(2);
+          return;
         }
-        if (res.statuscode === 400){
-          toast.error(res.nameMismatchStatus)
-          return
+    
+        if (res.statuscode === 400) {
+          toast.error(res.nameMismatchStatus);
+          return;
+        } else {
+          console.log('resp not 200--', res);
         }
-        else{
-          console.log('resp not 200--',res)
-        }
-      }}
-    catch(e){
-      console.error(e)
-    }
-}
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    
 
 
-  const onSubmitSecondForm = (e) => {
-    e.preventDefault()
-    setStep(3)
-    console.log(data.gender,data.dob,data.pinCode)
-    console.log('saveData---',saveData)
-    try{
-      if (!data.gender || !data.dob  || !data.pinCode) {
-        toast.error('All Fields Are Required !')
-        return
-      }
-      if(data.gender==saveData.gender && data.dob==saveData.dob && data.pinCode==saveData.pinCode){
-        setStep(3)
-      }
-      else{
-        toast.error('Information does not align with PAN card.')
-      }
-    }
-      catch(e){
-        console.log(e)
-      }
-  }
+  // const onSubmitSecondForm = (e) => {
+  //   e.preventDefault()
+  //   setStep(3)
+  //   console.log(data.gender,data.dob,data.pinCode)
+  //   console.log('saveData---',saveData)
+  //   try{
+  //     if (!data.gender || !data.dob  || !data.pinCode) {
+  //       toast.error('All Fields Are Required !')
+  //       return
+  //     }
+  //     if(data.gender==saveData.gender && data.dob==saveData.dob && data.pinCode==saveData.pinCode){
+  //       setStep(3)
+  //     }
+  //     else{
+  //       toast.error('Information does not align with PAN card.')
+  //     }
+  //   }
+  //     catch(e){
+  //       console.log(e)
+  //     }
+  // }
 
-  const onSubmitThirdForm = async (e) => {
+  const onSubmitSecondForm = async (e) => {
     e.preventDefault()
     setStep(3)
     if(!data.businessType || !data.businessPinCode || !data.businessAge || !data.yearlySales){
@@ -334,21 +350,21 @@ const onSaveUserDetails = async (e) => {
         <hr className="border-gray-800" />
       </div>
 
-      <<div onClick={handleDivClick} className="cursor-pointer">
+      <div onClick={handleDivClick} className="cursor-pointer">
   <label className="block text-sm font-bold text-gray-700 mb-1" htmlFor="dob">Date of Birth</label>
   
-  {/* Smaller Date Picker Container */}
+  {/* Date Picker Container */}
   <div
-    className="date-picker-container p-2 w-48 border rounded"
+    className="date-picker-container p-2 w-90 border rounded"
     onClick={handleDatePickerOpen}
     style={{ cursor: 'pointer' }}
   >
     <DatePicker
       ref={datePickerRef}
-      selected={new Date()}
-      onChange={(date) => console.log(date)} // Replace with your state setter or other logic
+      selected={data.dob} // Bind the selected value to the `data.dob` state
+      onChange={(date) => onChangeHandler(date, 'dob')} // Update the state with the selected date
       placeholderText="Select a date"
-      className="form-control w-full" // Ensures the DatePicker takes full width of its parent
+      className="form-control bg-gray-100 w-full" // Ensures the DatePicker takes full width of its parent
     />
   </div>
 
@@ -361,7 +377,7 @@ const onSaveUserDetails = async (e) => {
         <label className="block text-lg font-medium text-gray-700 mb-1">PinCode</label>
         <input
           type="text"
-          name="panNo"
+          name="pincode"
           value={data.pincode}
           onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
           placeholder="123456"
@@ -371,17 +387,20 @@ const onSaveUserDetails = async (e) => {
       </div>
 
       <div>
-        <label className="block text-lg font-medium text-gray-700 mb-1">PAN Card Number</label>
-        <input
-          type="text"
-          name="panNo"
-          value={data.panNo}
-          onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
-          placeholder="XXXX XXXX XXXX"
-          className="w-full bg-gray-100 py-2 px-3 text-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
-        <hr className="border-gray-800 w-100" />
-      </div>
+  <label className="block text-lg font-medium text-gray-700 mb-1">PAN Card Number</label>
+  <input
+    type="text"
+    name="panNo"
+    value={data.panNo}
+    onChange={(e) =>
+      onChangeHandler(e.target.value.toUpperCase(), e.target.name)
+    }
+    placeholder="XXXX XXXX XXXX"
+    className="w-full bg-gray-100 py-2 px-3 text-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+  />
+  <hr className="border-gray-800 w-100" />
+</div>
+
 
       <div>
         <label className="block text-lg font-medium text-gray-700 mb-1">Annual turnover</label>
@@ -409,6 +428,7 @@ const onSaveUserDetails = async (e) => {
       <button type="button"></button>
       <button
         type="submit"
+        
         className="w-full sm:w-auto px-4 py-2 mt-14 sm:mb-0 rounded-md bg-green-500 text-white hover:bg-green-600 focus:outline-none"
       >
         proceed to next step
@@ -504,14 +524,7 @@ const onSaveUserDetails = async (e) => {
                 <hr className="border-gray-800 w-50" />
               </div>
 
-              {/* <div className="mt-6">
-                <label className="block text-gray-700 text-sm font-bold mb-2">UDYAM / MSME Certification (Optional)</label>
-                <input
-                  type="file"
-                  className="w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  onChange={(e) => onFileChange(e, setBankStatementFile)}
-                />
-              </div> */}
+             
             </div>
             <div className="flex-1 bg-gray-100 p-4">
               {showGstNoDiv && (
@@ -562,7 +575,7 @@ const onSaveUserDetails = async (e) => {
             </button>
             <button
               type="submit"
-              onClick={onSubmitThirdForm}
+              onClick={onSubmitSecondForm}
               className="w-full sm:w-auto px-4 py-2 mt-14 sm:mb-0 rounded-md bg-green-500 text-white hover:bg-green-600 focus:outline-none"
             >
               Proceed to next step
@@ -676,112 +689,7 @@ const onSaveUserDetails = async (e) => {
       </div>
       )}
 
-      {step === 4 && (
-        <div className="max-w-4xl lg:max-w-full mx-auto bg-gray-100 p-8 rounded-md">
-          <ol class="flex items-center w-full text-xs text-gray-900 font-medium sm:text-base ml-4 sm:ml-12">
-            <li class="flex w-full relative text-indigo-600 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-              <div class="block whitespace-nowrap z-10">
-                <span class="w-6 h-6 bg-gray-100 border-1 border-transparent rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-white sm:w-10 sm:h-10"></span>
-              </div>
-            </li>
-            <li class="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-              <div class="block whitespace-nowrap z-10">
-                <span class="w-6 h-6 bg-indigo-600 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto mb-3 text-sm text-gray-800 sm:w-10 sm:h-10">1</span>
-              </div>
-            </li>
-            <li class="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-              <div class="block whitespace-nowrap z-10">
-                <span class="w-6 h-6 bg-indigo-600 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">2</span>
-              </div>
-            </li>
-            <li class="flex w-full relative text-gray-900 after:content-[''] after:w-full after:h-0.5 after:bg-indigo-600 after:inline-block after:absolute after:top-3 sm:after:top-5 after:left-4">
-              <div class="block whitespace-nowrap z-10">
-                <span class="w-6 h-6 bg-indigo-600 border-2 border-gray-200 rounded-full flex justify-center items-center mx-auto mb-3 text-sm sm:w-10 sm:h-10">3</span>
-              </div>
-            </li>
-            <li class="flex w-full relative text-gray-900">
-              <div class="block whitespace-nowrap z-10">
-                <span class="w-6 h-6 bg-indigo-50 border-2 border-indigo-600 rounded-full flex justify-center items-center mx-auto mb-3 text-indigo-600 text-sm sm:w-10 sm:h-10">4</span>
-              </div>
-            </li>
-          </ol>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-800">Application for vendor financing</h1>
-              <p className="text-gray-500 text-base">Add your business information</p>
-            </div>
-            <RmBox/>
-          </div>
-          <hr className="border-gray-800" />
-          <div className="container mx-auto p-4">
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-100 p-3 rounded-lg">
-                <label className="block text-gray-700 text-lg font-bold mb-2">Bank Statement (Past 12 months)</label>
-                <input
-                  type="file"
-                  className="w-full py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  onChange={(e) => onFileChange(e, setBankStatementFile)}
-                />
-              </div>
-              <div className="bg-gray-100 p-3 rounded-lg">
-                <label className="block text-gray-700 text-lg font-bold mb-2">Copy Of Agreement</label>
-                <input
-                  type="file"
-                  className="w-full py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  onChange={(e) => onFileChange(e, setCopyOfAgreementFile)}
-                />
-              </div>
-              <div className="bg-gray-100 p-3 rounded-lg">
-                <label className="block text-gray-700 text-lg font-bold mb-2">Audited Financials</label>
-                <input
-                  type="file"
-                  className="w-full py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  onChange={(e) => onFileChange(e, setAuditedFinancialsFile)}
-                />
-              </div>
-              <div className="bg-gray-100 p-3 rounded-lg">
-                <label className="block text-gray-700 text-lg font-bold mb-2">Purchase Order</label>
-                <input
-                  type="file"
-                  className="w-full py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  onChange={(e) => onFileChange(e, setPurchaseOrderFile)}
-                />
-              </div>
-
-              <div className='px-4'>
-                  <label className="block text-lg font-medium text-gray-700 mb-1">Buyer Name</label>
-                  <input
-                    type="text"
-                    name="buyerName"
-                    value={data.buyerName}
-                    onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
-                    placeholder="Enter your Buyer Name"
-                    className="w-1/2  bg-gray-100 py-2 px-3 text-md text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  />
-                  <hr className="border-gray-800" />
-                </div>
-
-                <div className="flex flex-col sm:flex-row justify-between mt-8">
-              <button
-                type="button"
-                className="w-full sm:w-auto mb-0 mt-14 sm:mb-0 px-4 py-2 rounded-md bg-gray-100 text-gray-700 hover:bg-yellow-300 focus:outline-none"
-              >
-              </button>
-              <button
-                type="button"
-                onClick={onClickSubmit}
-                className="w-full sm:w-auto px-4 py-2 mt-14 sm:mb-0 rounded-md bg-green-500 text-white hover:bg-green-600 focus:outline-none"
-              >
-                Submit this application form
-              </button>
-            </div>
-
-            </div>
-       
-          </div>
-        </div>
-      )}
+      
       <div>
         <Modal open={openSuccessModal} onClose={onCloseSuccessModal} center classNames=''>
           <div class="text-center p-6 bg-white rounded-lg shadow-md">

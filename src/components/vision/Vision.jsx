@@ -91,6 +91,29 @@ const Vision = () => {
       empowering businesses worldwide to achieve sustainable growth and efficiency."
         from="Home"
         to="Vision" />
+      <div className="flex flex-col md:flex-row items-center justify-between bg-gray-50 p-8 md:p-16 rounded-lg shadow-lg">
+        <div className="w-full md:w-1/2 flex justify-center mb-6 md:mb-0">
+          <lottie-player
+            src="https://assets7.lottiefiles.com/packages/lf20_jcikwtux.json"
+            background="transparent"
+            speed="1"
+            style={{ width: "300px", height: "300px" }}
+            autoplay
+          ></lottie-player>
+        </div>
+        <div className="w-full md:w-1/2 text-center md:text-left">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+            Our Vision 
+          </h2>
+          <p className="text-gray-600 text-lg leading-relaxed">
+            Altaneo Finance Pvt. Ltd. strives to shape the future of finance by fostering collaboration, trust, and technology-driven solutions.
+            Together with our clients, we aim to build a world where businesses have the financial freedom to innovate, grow, and succeed on
+            their terms.
+            <br />
+            Be part of our journey to redefine the future of finance with innovative and cutting-edge solutions.
+          </p>
+        </div>
+      </div>
       <VisionArraySection />
       <ProductsSection />
       <Numbers />
